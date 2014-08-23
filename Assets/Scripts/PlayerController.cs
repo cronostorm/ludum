@@ -6,16 +6,47 @@ public class PlayerController : MonoBehaviour {
   
   private bool facingRight = true;
 
+  public Transform groundCheck;
+  public LayerMask groundLayers;
+  public float jumpForce;
+  private bool grounded = false;
+  private float groundRadius = 0.2f;
+  
+
 	void Start () {
 	}
 	
   void FixedUpdate() {
-    float move = Input.GetAxis("Horizontal");
-    rigidbody2D.velocity = new Vector2(move * speed, rigidbody2D.velocity.y);
+    grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayers);
+    CheckForHorizontal();
+  }
 
-    if ((move > 0 && !facingRight) || (move < 0 && facingRight)) {
+  void Update() {
+    if (grounded) {
+      CheckForJump();
+    }
+  }
+  
+  void CheckForJump() {
+    float vertical = Input.GetAxis("Vertical");
+    if (vertical > 0) {
+      rigidbody2D.AddForce(new Vector2(0, jumpForce));
+      grounded = false;
+    }
+  }
+
+  void CheckForHorizontal() {
+    float horizontal = Input.GetAxis("Horizontal");
+    Move(horizontal * speed, rigidbody2D.velocity.y);
+    
+    if ((horizontal > 0 && !facingRight) || 
+        (horizontal < 0 && facingRight)) {
       Flip();
     }
+  }
+
+  void Move(float xvel, float yvel) {
+    rigidbody2D.velocity = new Vector2(xvel, yvel);
   }
 
   void Flip() {
