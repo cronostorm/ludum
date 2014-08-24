@@ -748,21 +748,21 @@ Prefab:
       propertyPath: normalSpeed
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: d40afed9cfb316d4d9b2a33999d5a36d, type: 2}
+      propertyPath: slideSpeed
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 21200000, guid: d40afed9cfb316d4d9b2a33999d5a36d, type: 2}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 7f2b7ddc8213b5e4c91904c206c9d11b,
         type: 3}
     - target: {fileID: 6100000, guid: d40afed9cfb316d4d9b2a33999d5a36d, type: 2}
-      propertyPath: m_Size.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6100000, guid: d40afed9cfb316d4d9b2a33999d5a36d, type: 2}
       propertyPath: m_Size.y
       value: 1.79999995
       objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: d40afed9cfb316d4d9b2a33999d5a36d, type: 2}
-      propertyPath: slideSpeed
+    - target: {fileID: 6100000, guid: d40afed9cfb316d4d9b2a33999d5a36d, type: 2}
+      propertyPath: m_Size.x
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

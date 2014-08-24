@@ -29,8 +29,8 @@ public class PlayerController : MonoBehaviour {
         float halfHeight = 0.9f;// rigidbody2D.collider2D.bounds.size.y / 2;
         float halfWidth = 0.5f;// rigidbody2D.collider2D.bounds.size.x / 2;
         grounded = Physics2D.OverlapArea(pos + new Vector2(-(halfWidth-0.01f), -halfHeight/2), pos + new Vector2(halfWidth-0.01f, -halfHeight-0.01f), groundLayers);
-        wallLeft = Physics2D.OverlapArea(pos + new Vector2(-(halfWidth + 0.01f), halfHeight - 0.01f), pos + new Vector2(-halfWidth/2, -(halfHeight - 0.01f)), groundLayers);
-        wallRight = Physics2D.OverlapArea(pos + new Vector2((halfWidth + 0.01f), halfHeight - 0.01f), pos + new Vector2(halfWidth / 2, -(halfHeight - 0.01f)), groundLayers);
+        wallLeft = Physics2D.OverlapArea(pos + new Vector2(-(halfWidth + 0.01f), halfHeight/2), pos + new Vector2(-halfWidth/2, 0), groundLayers);
+        wallRight = Physics2D.OverlapArea(pos + new Vector2((halfWidth + 0.01f), halfHeight/2), pos + new Vector2(halfWidth / 2, 0), groundLayers);
         canStand = (Physics2D.OverlapArea(pos + new Vector2(-(halfWidth - 0.01f), 0), pos + new Vector2((halfWidth - 0.01f), halfHeight + 0.01f), groundLayers) == null);
 
         CheckForHorizontal();
