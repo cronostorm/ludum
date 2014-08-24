@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour {
     public Transform sprite;
     public LayerMask groundLayers;
     public float jumpForce;
+    public Animator animator;
 
     private bool facingRight = true;
     private bool grounded = false;
@@ -38,6 +39,9 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Space)) {
             doJump = true;
         }
+        animator.SetBool("Crouch", isCrouching);
+        animator.SetBool("Grounded", grounded);
+        animator.SetBool("Moving", rigidbody2D.velocity.x != 0);
     }
 
     void CheckForCrouch() {
@@ -51,25 +55,30 @@ public class PlayerController : MonoBehaviour {
     void Crouch() {
         if (isCrouching) return;
 
+        /*
         var boxCollider = GetComponent<BoxCollider2D>();
         boxCollider.size = new Vector2(1, 1);
         boxCollider.center = new Vector2(0, -0.5f);
         sprite.localScale = new Vector3(1, 1);
         sprite.localPosition = new Vector3(0, -0.5f);
+        */
         isCrouching = true;
     }
 
     void Stand() {
         if (!isCrouching) return;
+        
 
         Vector2 pos = transform.position;
         bool canStand = !Physics2D.OverlapArea(pos + new Vector2(-0.49f, 0), pos + new Vector2(0.49f, 1.01f), groundLayers);
         if (canStand) {
+          /*
             var boxCollider = GetComponent<BoxCollider2D>();
             boxCollider.size = new Vector2(1, 2);
             boxCollider.center = new Vector2(0, 0);
             sprite.localScale = new Vector3(1, 2);
             sprite.localPosition = new Vector3(0, 0);
+            */
             isCrouching = false;
         }
     }

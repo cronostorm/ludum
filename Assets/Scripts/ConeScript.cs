@@ -2,43 +2,41 @@
 using System.Collections;
 
 public class ConeScript : MonoBehaviour {
-  public float speed; 
+  public float normalSpeed; 
+  public float sightDistance;
   private bool facingRight;
-  private Rigidbody2D body;
-  private Vector3 parentPos;
+  public Rigidbody2D body;
+
+  private int horizontal = 0;
   
 
 	// Use this for initialization
 	void Start () {
-	  body = transform.parent.gameObject.rigidbody2D;
-    parentPos = transform.parent.position;
-    facingRight = transform.parent.localScale.x > 0;
+    facingRight = transform.localScale.x > 0;
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
-  void OnTriggerStay2D(Collider2D collider) {
-    GameObject player = collider.gameObject;
-    if ((player.transform.position.x > parentPos.x && !facingRight) || 
-       (player.transform.position.x < parentPos.x && facingRight)) {
-      Flip();
+  void FixedUpdate() {
+    bool hitplayer = false;
+    RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, new Vector2(1, 0), sightDistance);
+    foreach (RaycastHit2D hit in hits) {
+      if (hit.transform.tag == "Player") {
+        hitplayer = true;
+        break;
+      }
     }
-
+    if (!hitplayer) return;
+    
+    horizontal = -1;
     if (facingRight) {
-      Move(speed, body.velocity.y);
+      horizontal = 1;
     }
-    else {
-      Move(-1 * speed, body.velocity.y);
-    }
+
+    body.AddForce(new Vector2(horizontal * 75, 0));
+    Vector2 vel = body.velocity;
+    vel.x = Mathf.Clamp(vel.x, -normalSpeed, normalSpeed);
+    body.velocity = vel;
   }
 
-  void Move(float xvel, float yvel) {
-    body.velocity = new Vector2(xvel, yvel);
-  }
-  
   void Flip() {
     facingRight = !facingRight;
     Vector3 scale = transform.localScale;
