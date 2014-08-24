@@ -19,12 +19,12 @@ public class PlayerController : MonoBehaviour {
   void FixedUpdate() {
     grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayers);
     CheckForHorizontal();
-  }
-
-  void Update() {
     if (grounded) {
       CheckForJump();
     }
+  }
+
+  void Update() {
   }
   
   void CheckForJump() {
