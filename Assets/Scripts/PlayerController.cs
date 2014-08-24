@@ -4,6 +4,7 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
     public float normalSpeed;
     public float crouchSpeed;
+    public float slideSpeed;
     public Transform sprite;
     public LayerMask groundLayers;
     public float jumpForce;
@@ -17,21 +18,28 @@ public class PlayerController : MonoBehaviour {
     private bool isCrouching = false;
     private bool isJumpPressed = false;
     private bool doJump = false;
+    private bool isSliding = false;
 
     void Start() {
     }
 
     void FixedUpdate() {
         Vector2 pos = rigidbody2D.position;
-        grounded = Physics2D.OverlapArea(pos + new Vector2(-0.49f, -0.95f), pos + new Vector2(0.49f, -1.01f), groundLayers);
-        wallLeft = Physics2D.OverlapArea(pos + new Vector2(-0.51f, 0.99f), pos + new Vector2(-0.45f, -0.99f), groundLayers);
-        wallRight = Physics2D.OverlapArea(pos + new Vector2(0.45f, -0.99f), pos + new Vector2(0.51f, 0.99f), groundLayers);
-
+        float halfHeight = rigidbody2D.collider2D.bounds.size.y / 2;
+        float halfWidth = rigidbody2D.collider2D.bounds.size.x / 2;
+        grounded = Physics2D.OverlapArea(pos + new Vector2(-(halfWidth-0.01f), -halfHeight/2), pos + new Vector2(halfWidth-0.01f, -halfHeight-0.01f), groundLayers);
+        wallLeft = Physics2D.OverlapArea(pos + new Vector2(-(halfWidth + 0.01f), halfHeight - 0.01f), pos + new Vector2(-halfWidth/2, -(halfHeight - 0.01f)), groundLayers);
+        wallRight = Physics2D.OverlapArea(pos + new Vector2((halfWidth + 0.01f), halfHeight - 0.01f), pos + new Vector2(halfWidth / 2, -(halfHeight - 0.01f)), groundLayers);
 
         CheckForHorizontal();
         CheckForJump();
         if (grounded) {
             CheckForCrouch();
+        }
+        if (isSliding) {
+            Vector2 vel = rigidbody2D.velocity;
+            vel.y = Mathf.Clamp(vel.y, -slideSpeed, slideSpeed);
+            rigidbody2D.velocity = vel;
         }
     }
 
@@ -42,6 +50,8 @@ public class PlayerController : MonoBehaviour {
         animator.SetBool("Crouch", isCrouching);
         animator.SetBool("Grounded", grounded);
         animator.SetBool("Moving", rigidbody2D.velocity.x != 0);
+        animator.SetFloat("VelocityY", rigidbody2D.velocity.y);
+        animator.SetBool("Sliding", isSliding);
     }
 
     void CheckForCrouch() {
@@ -86,8 +96,11 @@ public class PlayerController : MonoBehaviour {
     void CheckForJump() {
         if (doJump) {
             doJump = false;
-            if (grounded) {
+            if (grounded || isSliding) {
                 rigidbody2D.AddForce(new Vector2(0, jumpForce));
+                if (isSliding) {
+                    rigidbody2D.AddForce(new Vector2((facingRight ? -1 : 1) * jumpForce / 2, 0));
+                }
                 isJumpPressed = true;
                 grounded = false;
             }
@@ -109,15 +122,24 @@ public class PlayerController : MonoBehaviour {
             horizontal = 1;
         }
 
-        rigidbody2D.AddForce(new Vector2(horizontal * 75, 0));
+        bool isTowardsWall = (wallLeft && horizontal == -1) || (wallRight && horizontal == 1);
         Vector2 vel = rigidbody2D.velocity;
-        float maxSpeed = isCrouching ? crouchSpeed : normalSpeed;
-        vel.x = Mathf.Clamp(vel.x, -maxSpeed, maxSpeed);
-        rigidbody2D.velocity = vel;
+        if (!grounded && vel.y < 0 && isTowardsWall) {
+            isSliding = true;
+        } else {
+            isSliding = false;
+        }
 
-        if ((horizontal > 0 && !facingRight) ||
-            (horizontal < 0 && facingRight)) {
-            Flip();
+        if (horizontal != 0 && !isTowardsWall) {
+            rigidbody2D.AddForce(new Vector2(horizontal * 75, 0));
+            float maxSpeed = isCrouching ? crouchSpeed : normalSpeed;
+            vel.x = Mathf.Clamp(vel.x, -maxSpeed, maxSpeed);
+            rigidbody2D.velocity = vel;
+
+            if ((horizontal > 0 && !facingRight) ||
+                (horizontal < 0 && facingRight)) {
+                Flip();
+            }
         }
     }
 
