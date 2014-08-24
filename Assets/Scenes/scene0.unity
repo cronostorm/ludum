@@ -423,7 +423,7 @@ SpriteRenderer:
   m_ScaleInLightmap: 1
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: bc6e915a1ff6dba4c8167eba20738b4e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7f2b7ddc8213b5e4c91904c206c9d11b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!4 &452372883
 Transform:
@@ -462,7 +462,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 450c09b9eb9ee864ebee8eb741bab179, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normalSpeed: 10
+  normalSpeed: 7
   crouchSpeed: 2
   sprite: {fileID: 452372883}
   groundLayers:
@@ -552,7 +552,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -623,6 +623,10 @@ Prefab:
       propertyPath: player
       value: 
       objectReference: {fileID: 452372883}
+    - target: {fileID: 2000000, guid: 5de0a10869b1a81418d4dc3068e8fca8, type: 2}
+      propertyPath: orthographic size
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5de0a10869b1a81418d4dc3068e8fca8, type: 2}
   m_RootGameObject: {fileID: 552488795}
@@ -671,6 +675,15 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: d40afed9cfb316d4d9b2a33999d5a36d, type: 2}
+      propertyPath: normalSpeed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 21200000, guid: d40afed9cfb316d4d9b2a33999d5a36d, type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 7f2b7ddc8213b5e4c91904c206c9d11b,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d40afed9cfb316d4d9b2a33999d5a36d, type: 2}
   m_RootGameObject: {fileID: 452372879}
