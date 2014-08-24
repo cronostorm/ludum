@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour {
     private bool grounded = false;
     private bool wallLeft = false;
     private bool wallRight = false;
+    private bool canStand = false;
 
     private bool isCrouching = false;
     private bool isJumpPressed = false;
@@ -25,11 +26,12 @@ public class PlayerController : MonoBehaviour {
 
     void FixedUpdate() {
         Vector2 pos = rigidbody2D.position;
-        float halfHeight = rigidbody2D.collider2D.bounds.size.y / 2;
-        float halfWidth = rigidbody2D.collider2D.bounds.size.x / 2;
+        float halfHeight = 0.9f;// rigidbody2D.collider2D.bounds.size.y / 2;
+        float halfWidth = 0.5f;// rigidbody2D.collider2D.bounds.size.x / 2;
         grounded = Physics2D.OverlapArea(pos + new Vector2(-(halfWidth-0.01f), -halfHeight/2), pos + new Vector2(halfWidth-0.01f, -halfHeight-0.01f), groundLayers);
         wallLeft = Physics2D.OverlapArea(pos + new Vector2(-(halfWidth + 0.01f), halfHeight - 0.01f), pos + new Vector2(-halfWidth/2, -(halfHeight - 0.01f)), groundLayers);
         wallRight = Physics2D.OverlapArea(pos + new Vector2((halfWidth + 0.01f), halfHeight - 0.01f), pos + new Vector2(halfWidth / 2, -(halfHeight - 0.01f)), groundLayers);
+        canStand = (Physics2D.OverlapArea(pos + new Vector2(-(halfWidth - 0.01f), 0), pos + new Vector2((halfWidth - 0.01f), halfHeight + 0.01f), groundLayers) == null);
 
         CheckForHorizontal();
         CheckForJump();
@@ -52,51 +54,22 @@ public class PlayerController : MonoBehaviour {
         animator.SetBool("Moving", rigidbody2D.velocity.x != 0);
         animator.SetFloat("VelocityY", rigidbody2D.velocity.y);
         animator.SetBool("Sliding", isSliding);
+
     }
 
     void CheckForCrouch() {
         if (Input.GetKey(KeyCode.LeftControl)) {
-            Crouch();
-        } else {
-            Stand();
-        }
-    }
-
-    void Crouch() {
-        if (isCrouching) return;
-
-        /*
-        var boxCollider = GetComponent<BoxCollider2D>();
-        boxCollider.size = new Vector2(1, 1);
-        boxCollider.center = new Vector2(0, -0.5f);
-        sprite.localScale = new Vector3(1, 1);
-        sprite.localPosition = new Vector3(0, -0.5f);
-        */
-        isCrouching = true;
-    }
-
-    void Stand() {
-        if (!isCrouching) return;
-        
-
-        Vector2 pos = transform.position;
-        bool canStand = !Physics2D.OverlapArea(pos + new Vector2(-0.49f, 0), pos + new Vector2(0.49f, 1.01f), groundLayers);
-        if (canStand) {
-          /*
-            var boxCollider = GetComponent<BoxCollider2D>();
-            boxCollider.size = new Vector2(1, 2);
-            boxCollider.center = new Vector2(0, 0);
-            sprite.localScale = new Vector3(1, 2);
-            sprite.localPosition = new Vector3(0, 0);
-            */
+            isCrouching = true;
+        } else if (canStand) {
             isCrouching = false;
         }
     }
 
+
     void CheckForJump() {
         if (doJump) {
             doJump = false;
-            if (grounded || isSliding) {
+            if ((grounded || isSliding) && canStand) {
                 rigidbody2D.AddForce(new Vector2(0, jumpForce));
                 if (isSliding) {
                     rigidbody2D.AddForce(new Vector2((facingRight ? -1 : 1) * jumpForce / 2, 0));
@@ -122,15 +95,15 @@ public class PlayerController : MonoBehaviour {
             horizontal = 1;
         }
 
-        bool isTowardsWall = (wallLeft && horizontal == -1) || (wallRight && horizontal == 1);
+        bool isJumpingTowardsWall = !grounded && ((wallLeft && horizontal == -1) || (wallRight && horizontal == 1));
         Vector2 vel = rigidbody2D.velocity;
-        if (!grounded && vel.y < 0 && isTowardsWall) {
+        if (vel.y < 0 && isJumpingTowardsWall) {
             isSliding = true;
         } else {
             isSliding = false;
         }
 
-        if (horizontal != 0 && !isTowardsWall) {
+        if (horizontal != 0 && !isJumpingTowardsWall) {
             rigidbody2D.AddForce(new Vector2(horizontal * 75, 0));
             float maxSpeed = isCrouching ? crouchSpeed : normalSpeed;
             vel.x = Mathf.Clamp(vel.x, -maxSpeed, maxSpeed);
