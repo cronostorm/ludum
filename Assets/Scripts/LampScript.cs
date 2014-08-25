@@ -35,6 +35,8 @@ public class LampScript : MonoBehaviour {
 
         spottedPlayer = false;
 
+        int layermask = 1 << 13;
+        layermask = ~layermask;
         Vector2 origin = transform.position;
         RaycastHit2D[] hits = new RaycastHit2D[1];
         float xangle = Mathf.Sin(-angle / 2);
@@ -43,7 +45,7 @@ public class LampScript : MonoBehaviour {
         for (int i = 1; i < numRays + 1; i++) {
             xangle = Mathf.Sin(-angle / 2 + delta * (i - 1));
             yangle = -Mathf.Cos(-angle / 2 + delta * (i - 1));
-            if (Physics2D.RaycastNonAlloc(origin, new Vector2(xangle, yangle).normalized, hits, distance) > 0) {
+            if (Physics2D.RaycastNonAlloc(origin, new Vector2(xangle, yangle).normalized, hits, distance, layermask) > 0) {
                 verts[i] = new Vector3(xangle, yangle, 0).normalized * hits[0].fraction * distance;
                 spottedPlayer = spottedPlayer || hits[0].collider.tag == "Player";
             } else {
