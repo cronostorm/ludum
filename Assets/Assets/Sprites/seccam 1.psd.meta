@@ -1,11 +1,6 @@
 fileFormatVersion: 2
 guid: 900137f7b18266e4c8f9df61d6ddb6d5
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: seccam 1
-    21300002: seccam 1_0
-    21300004: seccam 1_1
-    21300006: seccam 1_2
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -55,7 +50,7 @@ TextureImporter:
         width: 17
         height: 8
       alignment: 9
-      pivot: {x: .560000002, y: .200000003}
+      pivot: {x: .5, y: .699999988}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: seccam 1_1
       rect:

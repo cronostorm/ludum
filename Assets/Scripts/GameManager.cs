@@ -3,6 +3,8 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
   public LampScript[] lamps;
+  public GameObject lights;
+
   private bool gameStart;
   public static bool spotted;
 
@@ -13,7 +15,8 @@ public class GameManager : MonoBehaviour {
 	}
 
   void Update() {
-    foreach (LampScript lamp in lamps) {
+      foreach (LampScript lamp in lights.GetComponentsInChildren<LampScript>()) {
+    //foreach (LampScript lamp in lamps) {
       if (lamp.spottedPlayer) {
         spotted = true;
         return;
