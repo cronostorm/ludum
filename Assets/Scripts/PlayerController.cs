@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour {
     public LayerMask groundLayers;
     public float jumpForce;
     public Animator animator;
+    public GameObject standLightBlocker;
+    public GameObject crouchLightBlocker;
 
 	public AudioClip footstep;
 	public AudioClip jumpstep;
@@ -55,6 +57,11 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Space) && !GameManager.spotted) {
             doJump = true;
         }
+
+        standLightBlocker.SetActive(!isCrouching);
+        crouchLightBlocker.SetActive(isCrouching);
+        
+
         animator.SetBool("Crouch", isCrouching);
         animator.SetBool("Grounded", grounded);
         animator.SetBool("Moving", rigidbody2D.velocity.x != 0);
