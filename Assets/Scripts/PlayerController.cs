@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour {
     public float jumpForce;
     public Animator animator;
 
+	public AudioClip footstep;
+	public AudioClip jumpstep;
+
     private bool facingRight = true;
     private bool grounded = false;
     private bool wallLeft = false;
@@ -35,6 +38,7 @@ public class PlayerController : MonoBehaviour {
         wallRight = Physics2D.OverlapArea(pos + new Vector2((halfWidth + 0.01f), halfHeight/2), pos + new Vector2(halfWidth / 2, 0), groundLayers);
         canStand = (Physics2D.OverlapArea(pos + new Vector2(-(halfWidth - 0.01f), 0), pos + new Vector2((halfWidth - 0.01f), halfHeight + 0.01f), groundLayers) == null);
 
+        if (GameManager.spotted) return;
         CheckForHorizontal();
         CheckForJump();
         if (grounded) {
@@ -48,7 +52,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.Space)) {
+        if (Input.GetKeyDown(KeyCode.Space) && !GameManager.spotted) {
             doJump = true;
         }
         animator.SetBool("Crouch", isCrouching);
@@ -67,12 +71,20 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+	void PlayFootStep() {
+		audio.PlayOneShot (footstep);
+	}
+
+	void PlayJumpStep() {
+		audio.PlayOneShot (jumpstep);
+	}
 
     void CheckForJump() {
         if (doJump) {
             doJump = false;
             if ((grounded || isSliding) && canStand) {
                 rigidbody2D.AddForce(new Vector2(0, jumpForce));
+				PlayJumpStep ();
                 if (isSliding) {
                     rigidbody2D.AddForce(new Vector2((facingRight ? -1 : 1) * jumpForce / 2, 0));
                     isSliding = false;

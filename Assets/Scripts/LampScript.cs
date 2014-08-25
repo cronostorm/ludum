@@ -63,11 +63,12 @@ public class LampScript : MonoBehaviour {
     void GenerateCone() {
         Mesh mesh = GetComponent<MeshFilter>().sharedMesh;
         mesh.vertices = verts;
+        mesh.RecalculateBounds();
     }
 
     void OnDrawGizmos() {
         Vector3 start = transform.position;
-        Gizmos.DrawSphere(start, 1);
+        Gizmos.DrawSphere(start, 0.5f);
 
         float angle = (offsetAngle - lightAngle / 2) * Mathf.PI / 180;
         Vector3 end = start + new Vector3(Mathf.Sin(-angle), -Mathf.Cos(-angle), 0) * distance;
