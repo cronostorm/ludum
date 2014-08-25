@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour {
         wallRight = Physics2D.OverlapArea(pos + new Vector2((halfWidth + 0.01f), halfHeight/2), pos + new Vector2(halfWidth / 2, 0), groundLayers);
         canStand = (Physics2D.OverlapArea(pos + new Vector2(-(halfWidth - 0.01f), 0), pos + new Vector2((halfWidth - 0.01f), halfHeight + 0.01f), groundLayers) == null);
 
+        if (GameManager.spotted) return;
         CheckForHorizontal();
         CheckForJump();
         if (grounded) {
@@ -48,7 +49,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.Space)) {
+        if (Input.GetKeyDown(KeyCode.Space) && !GameManager.spotted) {
             doJump = true;
         }
         animator.SetBool("Crouch", isCrouching);
