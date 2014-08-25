@@ -8,6 +8,7 @@ public class AIScript : MonoBehaviour {
   private bool facingRight;
   public Rigidbody2D body;
   public LampScript lamp;
+  public Animator animator;
 
   public Transform start;
   public Transform end;
@@ -31,6 +32,11 @@ public class AIScript : MonoBehaviour {
 
     if (lamp.spottedPlayer) ChasePlayer();
     else Patrol();
+  }
+
+  void Update() {
+      animator.SetBool("Grounded", true);
+      animator.SetBool("Moving", rigidbody2D.velocity.x != 0);
   }
 
   void Patrol() {

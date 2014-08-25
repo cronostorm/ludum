@@ -5,6 +5,8 @@ public class TileScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        return;
+
         GameObject level = GameObject.Find("level");
         foreach (Transform childTransform in level.transform) {
             GameObject child = childTransform.gameObject;
@@ -23,6 +25,7 @@ public class TileScript : MonoBehaviour {
 
     void OnDrawGizmos() {
         return;
+
         GameObject level = GameObject.Find("level");
         foreach (Transform childTransform in level.transform) {
             GameObject child = childTransform.gameObject;
