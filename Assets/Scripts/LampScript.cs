@@ -15,12 +15,10 @@ public class LampScript : MonoBehaviour {
 	protected Vector3[] verts;
 	// Use this for initialization
 
-	void Start () {
+	void OnEnable() {
     points = new Vector2[numRays + 1];
     verts = new Vector3[numRays + 1];
     triangles = new int[(numRays - 1) * 3];
-		gameObject.AddComponent ("MeshFilter");
-		gameObject.AddComponent ("MeshRenderer");
 		GetComponent<MeshRenderer> ().material = lightMaterial;
 		Mesh mesh = new Mesh();
     GetComponent<MeshFilter>().sharedMesh = mesh;
@@ -65,6 +63,21 @@ public class LampScript : MonoBehaviour {
 		Mesh mesh = GetComponent<MeshFilter>().sharedMesh;
 		mesh.vertices = verts;
 	}
+
+  void OnDrawGizmos() {
+    points = new Vector2[numRays + 1];
+    verts = new Vector3[numRays + 1];
+    triangles = new int[(numRays - 1) * 3];
+		GetComponent<MeshRenderer> ().material = lightMaterial;
+		Mesh mesh = new Mesh();
+    GetComponent<MeshFilter>().sharedMesh = mesh;
+    SetCollider();
+	  GenerateCone();
+		mesh.uv = points;
+    mesh.triangles = triangles;
+    SetCollider();
+	  GenerateCone();
+  }
 
   void Update() { 
     SetCollider();

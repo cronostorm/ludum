@@ -22,7 +22,6 @@ public class RotatingLamp : MonoBehaviour {
 			//for linear platform movement
 			t = ((Time.time % patrolTime) / patrolTime) * 2;
 			if (t > 1) t = 2-t;
-			Debug.Log (t);
 			lamp.offsetAngle = Mathf.Lerp (startAngle, endAngle, t);
 			yield return null;		
 		}
