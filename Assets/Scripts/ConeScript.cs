@@ -16,6 +16,8 @@ public class ConeScript : MonoBehaviour {
 	}
 	
   void FixedUpdate() {
+    return; 
+    /*
     bool hitplayer = false;
     RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, new Vector2(1, 0), sightDistance);
     foreach (RaycastHit2D hit in hits) {
@@ -35,6 +37,7 @@ public class ConeScript : MonoBehaviour {
     Vector2 vel = body.velocity;
     vel.x = Mathf.Clamp(vel.x, -normalSpeed, normalSpeed);
     body.velocity = vel;
+    */
   }
 
   void Flip() {
