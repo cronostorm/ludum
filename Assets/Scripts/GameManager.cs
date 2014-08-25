@@ -33,10 +33,11 @@ public class GameManager : MonoBehaviour {
       }
     }
     if (spotted) {
-        GUI.Label(new Rect(Screen.width/2 - 50, Screen.height/2 - 60, 100, 40), "You were Spotted");
-        if (GUI.Button(new Rect(Screen.width/2 - 50, Screen.height/2 - 20, 100, 40), "Retry") || Input.GetKeyDown("space")) {
+        GUI.Label(new Rect(Screen.width/2 - 50, Screen.height/2 - 60, 100, 40), "You were spotted. The universe is doomed.");
+        if (GUI.Button(new Rect(Screen.width/2 - 50, Screen.height/2 - 20, 100, 40), "Oops") || Input.GetKeyDown("space")) {
           Application.LoadLevel(0);
         }
     }
+
 	}
 }
