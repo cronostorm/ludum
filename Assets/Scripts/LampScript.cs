@@ -68,7 +68,7 @@ public class LampScript : MonoBehaviour {
 
     void OnDrawGizmos() {
         Vector3 start = transform.position;
-        Gizmos.DrawSphere(start, 0.5f);
+        Gizmos.DrawSphere(start, 0.2f);
 
         float angle = (offsetAngle - lightAngle / 2) * Mathf.PI / 180;
         Vector3 end = start + new Vector3(Mathf.Sin(-angle), -Mathf.Cos(-angle), 0) * distance;

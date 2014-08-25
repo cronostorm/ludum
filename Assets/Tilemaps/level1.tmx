@@ -9,14 +9,14 @@
    <objectgroup draworder="index"/>
   </tile>
  </tileset>
- <layer name="Tile Layer 1" width="200" height="40">
+ <layer name="Tiles" width="200" height="40">
   <data encoding="base64" compression="zlib">
-   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
+   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
   </data>
  </layer>
- <objectgroup name="Object Layer 1">
+ <objectgroup name="Light Blocking">
   <object x="0" y="624" width="1536" height="16"/>
-  <object x="0" y="496" width="240" height="32"/>
+  <object x="0" y="496" width="256" height="32"/>
   <object x="288" y="496" width="64" height="16"/>
   <object x="448" y="464" width="32" height="32"/>
   <object x="880" y="496">
@@ -35,7 +35,10 @@
   <object x="720" y="544" width="32" height="32"/>
   <object x="544" y="816"/>
   <object x="400" y="496">
-   <polyline points="0,0 0,32 128,32 128,-144 80,-144 80,0 0,0"/>
+   <polyline points="-16,0 -16,32 128,32 128,-144 80,-144 80,0 -16,0"/>
   </object>
+ </objectgroup>
+ <objectgroup name="See Through">
+  <object x="256" y="496" width="128" height="16"/>
  </objectgroup>
 </map>
