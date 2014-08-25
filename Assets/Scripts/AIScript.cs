@@ -19,10 +19,12 @@ public class AIScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-    facingRight = transform.localScale.x > 0;
+        lastFlip = 0;
+        facingRight = transform.localScale.x > 0;
 	}
 	
   void FixedUpdate() {
+      Debug.Log(transform.position);
     if (Mathf.Abs(transform.position.x - start.position.x) < 0.1f) {
       Flip();
     }

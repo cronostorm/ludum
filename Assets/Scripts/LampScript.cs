@@ -60,9 +60,6 @@ public class LampScript : MonoBehaviour {
                 triangles[(i - 2) * 3 + 2] = i;
             }
         }
-        if (spottedPlayer) {
-            Debug.Log(spottedPlayer);
-        }
     }
 
     void GenerateCone() {

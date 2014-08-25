@@ -5,9 +5,16 @@ public class TileScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        GameObject level = GameObject.Find("Light Blocking");
+        foreach (Transform child in level.transform) {
+            child.gameObject.layer = LayerMask.NameToLayer("Ground");
+        }
+
+
+
         return;
 
-        GameObject level = GameObject.Find("level");
+        /*GameObject level = GameObject.Find("level");
         foreach (Transform childTransform in level.transform) {
             GameObject child = childTransform.gameObject;
             if (child.renderer.material.mainTexture != null) {
@@ -15,7 +22,7 @@ public class TileScript : MonoBehaviour {
                 float h = child.renderer.material.mainTexture.height / 32.0f;
                 child.renderer.material.mainTextureScale = new Vector2(childTransform.localScale.x / w, childTransform.localScale.y / h);
             }
-        }
+        }*/
 	}
 	
 	// Update is called once per frame
