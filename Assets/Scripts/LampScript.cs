@@ -2,9 +2,7 @@
 using System.Collections;
 
 public class LampScript : MonoBehaviour {
-
-	//static lamp with specified degree for cone of light
-
+    //static lamp with specified degree for cone of light
 	public float lightAngle;
   public float offsetAngle;
 	public float distance;

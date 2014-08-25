@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour {
     private bool doJump = false;
     private bool isSliding = false;
 
+    private float lastSlideTime;
+
     void Start() {
     }
 
@@ -73,6 +75,7 @@ public class PlayerController : MonoBehaviour {
                 rigidbody2D.AddForce(new Vector2(0, jumpForce));
                 if (isSliding) {
                     rigidbody2D.AddForce(new Vector2((facingRight ? -1 : 1) * jumpForce / 2, 0));
+                    isSliding = false;
                 }
                 isJumpPressed = true;
                 grounded = false;
@@ -90,29 +93,35 @@ public class PlayerController : MonoBehaviour {
     void CheckForHorizontal() {
         float horizontal = 0;
         if (Input.GetKey(KeyCode.LeftArrow)) {
-            horizontal = -1;
-        } else if (Input.GetKey(KeyCode.RightArrow)) {
-            horizontal = 1;
+            horizontal -= 1;
+        }
+        if (Input.GetKey(KeyCode.RightArrow)) {
+            horizontal += 1;
         }
 
+        bool isTouchingWall = wallLeft || wallRight;
         bool isJumpingTowardsWall = !grounded && ((wallLeft && horizontal == -1) || (wallRight && horizontal == 1));
         Vector2 vel = rigidbody2D.velocity;
         if (vel.y < 0 && isJumpingTowardsWall) {
             isSliding = true;
-        } else {
+            lastSlideTime = Time.time;
+        } else if (Time.time - lastSlideTime > 0.1f || !isTouchingWall) {
             isSliding = false;
         }
 
-        if (horizontal != 0 && !isJumpingTowardsWall) {
+        if (horizontal != 0 && !isJumpingTowardsWall && Time.time - lastSlideTime > 0.05f) {
             rigidbody2D.AddForce(new Vector2(horizontal * 75, 0));
-            float maxSpeed = isCrouching ? crouchSpeed : normalSpeed;
-            vel.x = Mathf.Clamp(vel.x, -maxSpeed, maxSpeed);
-            rigidbody2D.velocity = vel;
 
             if ((horizontal > 0 && !facingRight) ||
                 (horizontal < 0 && facingRight)) {
                 Flip();
             }
+        }
+
+        float maxSpeed = isCrouching ? crouchSpeed : normalSpeed;
+        if (vel.x < -maxSpeed || vel.x > maxSpeed) {
+            vel.x = Mathf.Clamp(vel.x, -maxSpeed, maxSpeed);
+            rigidbody2D.velocity = vel;
         }
     }
 
