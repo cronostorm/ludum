@@ -66,7 +66,7 @@ public class LampScript : MonoBehaviour {
 		mesh.vertices = verts;
 	}
 
-  void FixedUpdate() { 
+  void Update() { 
     SetCollider();
 	  GenerateCone();
   }
