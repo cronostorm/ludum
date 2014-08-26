@@ -31,6 +31,10 @@ public class PlayerController : MonoBehaviour {
     void Start() {
     }
 
+    public bool isGrounded() {
+        return grounded;
+    }
+
     void FixedUpdate() {
         Vector2 pos = rigidbody2D.position;
         float halfHeight = 0.9f;// rigidbody2D.collider2D.bounds.size.y / 2;
@@ -40,7 +44,7 @@ public class PlayerController : MonoBehaviour {
         wallRight = Physics2D.OverlapArea(pos + new Vector2((halfWidth + 0.01f), halfHeight/2), pos + new Vector2(halfWidth / 2, 0), groundLayers);
         canStand = (Physics2D.OverlapArea(pos + new Vector2(-(halfWidth - 0.01f), 0), pos + new Vector2((halfWidth - 0.01f), halfHeight + 0.01f), groundLayers) == null);
 
-        if (GameManager.spotted) return;
+        if (GameManager.done) return;
         CheckForHorizontal();
         CheckForJump();
         if (grounded) {
@@ -54,7 +58,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.Space) && !GameManager.spotted) {
+        if (Input.GetKeyDown(KeyCode.Space) && !GameManager.done) {
             doJump = true;
         }
 
@@ -130,11 +134,11 @@ public class PlayerController : MonoBehaviour {
 
         if (horizontal != 0 && !isJumpingTowardsWall && Time.time - lastSlideTime > 0.05f) {
             rigidbody2D.AddForce(new Vector2(horizontal * 75, 0));
+        }
 
-            if ((horizontal > 0 && !facingRight) ||
-                (horizontal < 0 && facingRight)) {
-                Flip();
-            }
+        if ((horizontal > 0 && !facingRight) ||
+            (horizontal < 0 && facingRight)) {
+            Flip();
         }
 
         float maxSpeed = isCrouching ? crouchSpeed : normalSpeed;

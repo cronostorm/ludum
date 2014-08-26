@@ -24,11 +24,10 @@ public class AIScript : MonoBehaviour {
 	}
 	
   void FixedUpdate() {
-      Debug.Log(transform.position);
-    if (Mathf.Abs(transform.position.x - start.position.x) < 0.1f) {
+    if (transform.position.x < start.position.x && !facingRight) {
       Flip();
     }
-    else if (Mathf.Abs(transform.position.x - end.position.x) < 0.1f) {
+    else if (transform.position.x >  end.position.x && facingRight) {
       Flip();
     }
 
