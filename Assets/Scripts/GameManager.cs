@@ -120,6 +120,7 @@ public class GameManager : MonoBehaviour {
             guiStyle.alignment = TextAnchor.UpperCenter;
             GUI.Label(new Rect(0, Screen.height/2 - 60, Screen.width, 40), "You have been seen, and the universe is now broken.", guiStyle);
             if (GUI.Button(new Rect(Screen.width/2 - 50, Screen.height/2 - 20, 100, 40), "Oops", buttonStyle) || Input.GetKeyDown("space")) {
+                spotted = false;
               Application.LoadLevel(0);
             }
             guiStyle.alignment = TextAnchor.UpperLeft;

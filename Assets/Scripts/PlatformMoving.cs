@@ -23,7 +23,7 @@ public class PlatformMoving : MonoBehaviour {
 			//t = (Mathf.Sin ((Time.time*6.28f/patrolTime)) + 1) / 2;
 
 			//for linear platform movement
-			t = ((Time.time % patrolTime) / patrolTime) * 2;
+			t = ((Time.timeSinceLevelLoad % patrolTime) / patrolTime) * 2;
 			if (t > 1) t = 2-t;
 			Debug.Log (t);
 			transform.position = Vector3.Lerp (start, end, t);
